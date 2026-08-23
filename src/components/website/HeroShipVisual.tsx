@@ -2,114 +2,123 @@ import React from 'react';
 
 export const HeroShipVisual: React.FC = () => {
   return (
-    <div className="relative w-full max-w-lg mx-auto flex items-center justify-center pointer-events-none">
-      {/* Soft Water Ripple Glow at Hull Line */}
-      <div className="absolute bottom-6 w-3/4 h-8 bg-cyan-500/20 blur-xl rounded-full animate-pulse"></div>
+    <div className="relative w-full max-w-[560px] mx-auto flex items-center justify-center pointer-events-none select-none">
+      {/* Soft Water Ambient Glow at Hull Base */}
+      <div className="absolute bottom-2 w-4/5 h-10 bg-cyan-500/15 blur-2xl rounded-full"></div>
 
       <svg
-        className="w-full h-auto drop-shadow-[0_20px_40px_rgba(2,6,23,0.8)]"
-        viewBox="0 0 600 320"
+        className="w-full h-auto drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)]"
+        viewBox="0 0 700 280"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <linearGradient id="hullGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="hullDark" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#1e293b" />
-            <stop offset="50%" stopColor="#0f172a" />
+            <stop offset="40%" stopColor="#0f172a" />
             <stop offset="100%" stopColor="#020617" />
           </linearGradient>
 
-          <linearGradient id="deckGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#334155" />
-            <stop offset="100%" stopColor="#1e293b" />
-          </linearGradient>
-
-          <linearGradient id="superstructureGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#f8fafc" />
+          <linearGradient id="superstructureWhite" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="60%" stopColor="#e2e8f0" />
             <stop offset="100%" stopColor="#94a3b8" />
           </linearGradient>
 
-          <linearGradient id="cargoGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <linearGradient id="cargoHatch" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#475569" />
             <stop offset="100%" stopColor="#1e293b" />
           </linearGradient>
 
-          <linearGradient id="waterLine" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#ef4444" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#b91c1c" stopOpacity="0.9" />
+          <linearGradient id="keelRed" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ef4444" />
+            <stop offset="100%" stopColor="#b91c1c" />
+          </linearGradient>
+
+          <linearGradient id="waterFlow" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#06b6d4" stopOpacity="0" />
+            <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
           </linearGradient>
         </defs>
 
-        {/* Bulker Ship Hull Geometry (Panamax Class) */}
-        {/* Lower Red Antifouling Waterline */}
+        {/* 1. Bulbous Bow & Keel Waterline (Complete Side Profile) */}
         <path
-          d="M 60 250 L 520 250 Q 560 250 575 230 L 565 265 Q 530 280 470 280 L 100 280 Q 50 280 45 260 Z"
-          fill="url(#waterLine)"
+          d="M 50 205 L 610 205 Q 655 205 670 190 L 660 225 Q 625 242 560 242 L 100 242 Q 40 242 35 220 Z"
+          fill="url(#keelRed)"
         />
 
-        {/* Main Black Steel Hull */}
+        {/* 2. Main High-Tensile Steel Hull */}
         <path
-          d="M 50 190 L 530 190 Q 570 190 585 160 L 575 230 Q 560 250 520 250 L 60 250 Q 40 230 45 200 Z"
-          fill="url(#hullGradient)"
+          d="M 40 150 L 620 150 Q 665 150 680 120 L 670 190 Q 655 205 610 205 L 50 205 Q 30 185 35 160 Z"
+          fill="url(#hullDark)"
           stroke="#334155"
           strokeWidth="1.5"
         />
 
-        {/* Bow Crest & Draft Marks */}
-        <line x1="575" y1="170" x2="575" y2="250" stroke="#06b6d4" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
-
-        {/* Cargo Holds Hatch Covers (7 Holds - Panamax Specification) */}
-        {[100, 160, 220, 280, 340, 400, 460].map((x, i) => (
+        {/* 3. 7 Cargo Holds & Hatches (Fully Visible Panamax Configuration) */}
+        {[100, 168, 236, 304, 372, 440, 508].map((x, i) => (
           <g key={i}>
             <rect
               x={x}
-              y="178"
-              width="48"
+              y="138"
+              width="54"
               height="14"
-              rx="2"
-              fill="url(#cargoGradient)"
+              rx="2.5"
+              fill="url(#cargoHatch)"
               stroke="#64748b"
-              strokeWidth="1"
+              strokeWidth="1.2"
             />
-            {/* Hatch Detail */}
-            <line x1={x + 6} y1="185" x2={x + 42} y2="185" stroke="#94a3b8" strokeWidth="0.75" opacity="0.5" />
+            {/* Hatch Cover Ridge */}
+            <line x1={x + 6} y1="145" x2={x + 48} y2="145" stroke="#94a3b8" strokeWidth="0.8" opacity="0.6" />
           </g>
         ))}
 
-        {/* Deck Cargo Cranes (Geared Supramax/Panamax rig) */}
-        {[140, 260, 380].map((cx, idx) => (
-          <g key={idx} opacity="0.85">
-            <rect x={cx + 10} y="152" width="6" height="26" fill="#64748b" rx="1" />
-            <line x1={cx + 13} y1="154" x2={cx + 55} y2="140" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" />
-            <line x1={cx + 13} y1="154" x2={cx - 20} y2="145" stroke="#64748b" strokeWidth="1.5" />
+        {/* 4. Electro-Hydraulic Deck Cranes */}
+        {[145, 280, 415, 550].map((cx, idx) => (
+          <g key={idx} opacity="0.9">
+            <rect x={cx} y="112" width="7" height="26" fill="#64748b" rx="1.5" />
+            <line x1={cx + 3.5} y1="114" x2={cx + 52} y2="100" stroke="#94a3b8" strokeWidth="2.2" strokeLinecap="round" />
+            <line x1={cx + 3.5} y1="114" x2={cx - 18} y2="105" stroke="#64748b" strokeWidth="1.5" />
           </g>
         ))}
 
-        {/* Aft Bridge Superstructure & Accommodation Tower */}
-        <g transform="translate(60, 110)">
-          {/* Main Tower Block */}
-          <path d="M 10 80 L 10 20 L 45 20 L 45 80 Z" fill="url(#superstructureGradient)" stroke="#cbd5e1" strokeWidth="1" />
+        {/* 5. Aft Accommodations Tower & Navigation Bridge (Complete Structure) */}
+        <g transform="translate(48, 62)">
+          {/* Main 5-Tier Tower Block */}
+          <path d="M 12 88 L 12 24 L 56 24 L 56 88 Z" fill="url(#superstructureWhite)" stroke="#cbd5e1" strokeWidth="1.2" />
           
-          {/* Bridge Deck & Windows */}
-          <rect x="5" y="15" width="45" height="12" rx="1.5" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="0.75" />
-          {[10, 18, 26, 34, 42].map((wx, wi) => (
-            <rect key={wi} x={wx} y="18" width="5" height="5" fill="#0284c7" />
+          {/* Bridge Wings & Windows */}
+          <rect x="6" y="16" width="56" height="14" rx="2" fill="#ffffff" stroke="#94a3b8" strokeWidth="1" />
+          {[12, 22, 32, 42, 52].map((wx, wi) => (
+            <rect key={wi} x={wx} y="20" width="6" height="6" rx="0.5" fill="#0284c7" />
           ))}
 
-          {/* Exhaust Funnel Stack */}
-          <rect x="2" y="32" width="10" height="28" fill="#1e293b" rx="1" />
-          <rect x="2" y="38" width="10" height="5" fill="#2563eb" />
+          {/* Main Exhaust Funnel with Blue Company Band */}
+          <rect x="4" y="36" width="12" height="34" fill="#1e293b" rx="1.5" />
+          <rect x="4" y="44" width="12" height="6" fill="#2563eb" />
 
-          {/* Radar Mast & Navigation Sensors */}
-          <line x1="28" y1="15" x2="28" y2="-10" stroke="#94a3b8" strokeWidth="2" />
-          <line x1="20" y1="-5" x2="36" y2="-5" stroke="#94a3b8" strokeWidth="1.5" />
-          <circle cx="28" cy="-10" r="2.5" fill="#38bdf8" className="animate-ping" style={{ animationDuration: '2s' }} />
+          {/* Radar Communication Mast */}
+          <line x1="34" y1="16" x2="34" y2="-12" stroke="#94a3b8" strokeWidth="2.5" />
+          <line x1="24" y1="-4" x2="44" y2="-4" stroke="#94a3b8" strokeWidth="1.75" />
+          <circle cx="34" cy="-12" r="3" fill="#38bdf8" className="animate-ping" style={{ animationDuration: '2.5s' }} />
         </g>
 
-        {/* Technical Vessel Callout Text */}
-        <text x="470" y="272" fill="#38bdf8" fontSize="8" fontFamily="monospace" fontWeight="bold" opacity="0.8">
-          76,000 DWT PANAMAX
-        </text>
+        {/* 6. Waterline Wave Wake */}
+        <path
+          d="M 20 208 Q 350 216 680 208"
+          stroke="url(#waterFlow)"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+
+        {/* 7. Clear Technical Callout (Clean Crisp Font) */}
+        <g transform="translate(540, 230)">
+          <rect x="-6" y="-10" width="112" height="16" rx="3" fill="#070e1e" stroke="#1e3362" strokeWidth="0.75" />
+          <text x="0" y="2" fill="#38bdf8" fontSize="8.5" fontFamily="Inter, sans-serif" fontWeight="700" letterSpacing="0.5">
+            PANAMAX • 76k DWT
+          </text>
+        </g>
       </svg>
     </div>
   );
