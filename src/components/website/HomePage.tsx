@@ -141,7 +141,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </motion.div>
             </div>
 
-            {/* Right Visual: Cinematic Panamax Vessel Photo (5 Cols) */}
+            {/* Right Visual: Animated Vector Vessel Structure (5 Cols) */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.96, y: 25 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -173,29 +173,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <span className="font-bold text-amber-300 font-mono">Next 4–7 Days</span>
               </motion.div>
 
-              {/* High-Resolution Hero Ship Photo */}
+              {/* Vector Vessel Model with Gentle Ocean Float */}
               <motion.div
                 animate={{ 
-                  x: [0, 5, 0],
-                  y: [0, -3.5, 0] 
+                  x: [0, 6, 0],
+                  y: [0, -4, 0] 
                 }}
                 transition={{ 
                   duration: 7, 
                   repeat: Infinity, 
                   ease: 'easeInOut' 
                 }}
-                className="w-full rounded-2xl overflow-hidden border border-cyan-500/40 shadow-2xl shadow-cyan-950/60 bg-black/60 relative group"
+                className="w-full"
               >
-                <img
-                  src="/hero_ship.jpg"
-                  alt="Panamax Bulk Carrier at Sea"
-                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070e1e] via-transparent to-transparent opacity-80"></div>
-                <div className="absolute bottom-3 left-4 text-[11px] font-mono text-cyan-300 font-bold flex items-center gap-1.5">
-                  <Ship className="w-3.5 h-3.5" />
-                  <span>STAR NOVA • 76,000 DWT PANAMAX</span>
-                </div>
+                <HeroShipVisual />
               </motion.div>
 
               {/* Floating Badge 3: Optimal Vessel */}
