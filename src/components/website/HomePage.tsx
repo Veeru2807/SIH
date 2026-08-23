@@ -99,7 +99,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             className="pt-4"
           >
             <button
-              onClick={() => onNavigate('dashboard')}
+              onClick={() => onNavigate('features')}
               className="px-8 py-3.5 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 font-bold text-sm shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:shadow-[0_0_40px_rgba(6,182,212,0.9)] transition-all transform hover:-translate-y-1 active:translate-y-0 cursor-pointer"
             >
               Explore Platform
