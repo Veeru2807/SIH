@@ -341,6 +341,17 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </div>
             ))}
           </div>
+
+          {/* High-Resolution Platform Architecture Showcase Image */}
+          <div className="pt-6">
+            <div className="rounded-xl overflow-hidden border border-slate-700/90 shadow-2xl bg-black/50">
+              <img 
+                src="/freightquant_showcase.jpg" 
+                alt="FreightQuant High Fidelity Architecture & Platform Preview" 
+                className="w-full h-auto object-cover hover:scale-[1.01] transition-transform duration-500"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

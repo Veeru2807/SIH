@@ -81,39 +81,48 @@ export const FeaturesPage: React.FC<FeaturesPageProps> = ({ onNavigate }) => {
         })}
       </div>
 
-      {/* Product Preview Card */}
-      <div className="bg-slate-900 rounded-2xl p-8 sm:p-12 text-white space-y-8 border border-slate-800">
+      {/* Product Preview Card with Real High-Resolution Showcase Image */}
+      <div className="bg-slate-900 rounded-2xl p-6 sm:p-10 text-white space-y-6 border border-slate-800 shadow-2xl overflow-hidden">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-blue-400">Interactive Trading Terminal</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-blue-400">Interactive Trading Terminal Preview</div>
             <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">
-              Experience the Full Platform Dashboard
+              Multi-Module Platform Architecture
             </h2>
           </div>
 
           <button
             onClick={() => onNavigate('dashboard')}
-            className="btn-primary px-6 py-3 text-xs font-semibold flex items-center gap-2 cursor-pointer"
+            className="btn-primary px-6 py-3 text-xs font-semibold flex items-center gap-2 cursor-pointer shadow-lg shadow-blue-500/25"
           >
             <span>Launch Platform Dashboard</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
 
+        {/* Embedded Showcase Image */}
+        <div className="rounded-xl overflow-hidden border border-slate-700/80 shadow-2xl bg-black/40">
+          <img 
+            src="/freightquant_showcase.jpg" 
+            alt="FreightQuant Platform Showcase" 
+            className="w-full h-auto object-cover hover:scale-[1.01] transition-transform duration-500"
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-800">
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <span className="text-sm font-bold text-white block">1. Charter Planner</span>
             <p className="text-xs text-slate-400 leading-relaxed">
               Input parcel sizes, laycans, origin countries, and Indian discharge ports.
             </p>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <span className="text-sm font-bold text-white block">2. Decision Recommendation</span>
             <p className="text-xs text-slate-400 leading-relaxed">
               Panamax vessel + 4-7 days entry window + Medium-Term COA contract with ₹7.1 Cr savings.
             </p>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <span className="text-sm font-bold text-white block">3. Sensitivity Simulator</span>
             <p className="text-xs text-slate-400 leading-relaxed">
               Stress-test freight rate surges (+15%) and observe automated adaptation in real time.
