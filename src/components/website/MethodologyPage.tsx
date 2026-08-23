@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { 
   Database, 
   Cpu, 
@@ -7,7 +8,8 @@ import {
   Calculator, 
   CheckCircle2, 
   ArrowRight,
-  ShieldCheck
+  ShieldCheck,
+  Sparkles
 } from 'lucide-react';
 import { MainNavPage } from './Navbar';
 
@@ -64,92 +66,127 @@ export const MethodologyPage: React.FC<MethodologyPageProps> = ({ onNavigate }) 
   ];
 
   return (
-    <div className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-      {/* Header with Control Center Photo */}
-      <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-xl bg-[#070e1e] relative">
+    <div className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 overflow-hidden">
+      {/* Header with Animated Control Center Photo Banner */}
+      <motion.div 
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        className="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-[#070e1e] relative"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
-          <div className="lg:col-span-7 p-8 sm:p-12 space-y-4">
-            <div className="text-xs font-bold uppercase tracking-wider text-cyan-400">Rigorous Mathematical Architecture</div>
+          <div className="lg:col-span-7 p-8 sm:p-12 space-y-4 relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-[11px] font-bold text-cyan-400">
+              <Sparkles className="w-3 h-3 text-cyan-400" />
+              <span>RIGOROUS MATHEMATICAL ARCHITECTURE</span>
+            </div>
             <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight">
               How FreightQuant Computes Decisions
             </h1>
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-xl font-normal">
               Our 6-stage quantitative optimization pipeline bridges macroeconomic time-series forecasting with physical port navigation constraints.
             </p>
           </div>
-          <div className="lg:col-span-5 h-64 lg:h-full relative overflow-hidden">
-            <img
+          <div className="lg:col-span-5 h-64 lg:h-full relative overflow-hidden group">
+            <motion.img
+              initial={{ scale: 1.05 }}
+              animate={{ scale: 1.0 }}
+              transition={{ duration: 8, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
               src="/control_room.jpg"
               alt="Maritime Control Operations Center"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#070e1e] via-transparent to-transparent hidden lg:block"></div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Interactive Horizontal Timeline on Desktop / Stacked Accordion on Mobile */}
-      <div className="space-y-8">
-        {/* Step Buttons */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {steps.map((s, idx) => {
-            const isActive = activeStep === idx;
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="space-y-8"
+      >
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          {steps.map((step, idx) => {
+            const Icon = step.icon;
+            const isSelected = activeStep === idx;
             return (
-              <button
-                key={s.num}
+              <motion.button
+                key={step.num}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 onClick={() => setActiveStep(idx)}
-                className={`p-4 rounded-xl text-left border transition-all cursor-pointer ${
-                  isActive 
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20' 
-                    : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                className={`p-4 rounded-xl text-left transition-all border cursor-pointer relative overflow-hidden ${
+                  isSelected
+                    ? 'bg-[#070e1e] text-white border-blue-500 shadow-xl shadow-blue-500/20 ring-1 ring-blue-500'
+                    : 'bg-white text-slate-700 border-slate-200 hover:border-blue-300 hover:bg-slate-50'
                 }`}
               >
-                <div className={`text-xs font-mono font-bold mb-1 ${isActive ? 'text-blue-200' : 'text-blue-600'}`}>
-                  STAGE {s.num}
+                {isSelected && (
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400"></div>
+                )}
+                <div className="flex items-center justify-between mb-3">
+                  <span className={`text-xs font-mono font-bold ${isSelected ? 'text-cyan-400' : 'text-slate-400'}`}>
+                    {step.num}
+                  </span>
+                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                    isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'
+                  }`}>
+                    <Icon className="w-3.5 h-3.5" />
+                  </div>
                 </div>
-                <div className="text-xs font-bold leading-tight">{s.title}</div>
-              </button>
+                <div className="text-xs font-bold leading-snug line-clamp-2">
+                  {step.title}
+                </div>
+              </motion.button>
             );
           })}
         </div>
 
-        {/* Active Stage Deep Dive */}
-        <div className="enterprise-card p-8 sm:p-10 space-y-6 bg-gradient-to-br from-white via-slate-50 to-blue-50/40 border-blue-200">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+        {/* Active Stage Detail Panel */}
+        <motion.div 
+          key={activeStep}
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="bg-slate-900 text-white rounded-2xl p-8 sm:p-12 border border-slate-800 space-y-6 shadow-2xl relative overflow-hidden"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-lg bg-blue-600 text-white font-mono font-bold text-sm flex items-center justify-center shadow-sm">
-                {steps[activeStep].num}
+              <span className="text-xs font-mono font-bold px-3 py-1 rounded bg-blue-500/20 text-cyan-400 border border-blue-500/30">
+                STAGE {steps[activeStep].num} OF 06
               </span>
-              <div>
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900">{steps[activeStep].title}</h3>
-                <p className="text-xs text-slate-500 mt-0.5">{steps[activeStep].summary}</p>
-              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                {steps[activeStep].title}
+              </h2>
             </div>
-
-            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-800">
-              Active Optimization Pipeline Stage
-            </span>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">Technical Details & Implementation</h4>
-            <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
-              {steps[activeStep].details}
-            </p>
-          </div>
-
-          <div className="pt-4 flex items-center justify-between text-xs text-slate-500">
-            <span>Deterministic mathematical formulation | Zero generative hallucinations</span>
             <button
               onClick={() => onNavigate('dashboard')}
-              className="font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer"
+              className="px-6 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-md shadow-blue-500/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
             >
-              <span>Test Live in Dashboard</span>
+              <span>See in Live Terminal</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
-        </div>
-      </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-slate-800">
+            <div className="space-y-3">
+              <div className="text-xs uppercase tracking-wider text-slate-400 font-bold">Operational Objective</div>
+              <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                {steps[activeStep].summary}
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <div className="text-xs uppercase tracking-wider text-cyan-400 font-bold">Algorithmic Implementation</div>
+              <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                {steps[activeStep].details}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Mail, MapPin, Phone, Send, CheckCircle2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Mail, MapPin, Phone, Send, CheckCircle2, Sparkles } from 'lucide-react';
 
 export const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -17,22 +18,35 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-      {/* Header */}
-      <div className="max-w-3xl space-y-4">
-        <div className="text-xs font-bold uppercase tracking-wider text-blue-600">Get in Touch</div>
+    <div className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 overflow-hidden">
+      {/* Header with Motion Entrance */}
+      <motion.div 
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        className="max-w-3xl space-y-4"
+      >
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-bold text-blue-600">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>DIRECT LOGISTICS DESK</span>
+        </div>
         <h1 className="text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight">
           Connect with the FreightQuant Team
         </h1>
         <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
           Have questions regarding model evaluation, port constraint integration, or SIH 26006 technical architecture? We are ready to assist.
         </p>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        {/* Contact Info (5 cols) */}
-        <div className="lg:col-span-5 space-y-8">
-          <div className="enterprise-card p-8 space-y-6">
+        {/* Contact Info (5 cols) with Hover Elevation */}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="lg:col-span-5 space-y-8"
+        >
+          <div className="enterprise-card p-8 space-y-6 border border-slate-200 hover:border-blue-500/50 hover:shadow-xl transition-all">
             <h3 className="text-xl font-bold text-slate-900">Direct Contact</h3>
 
             <div className="space-y-4 text-sm text-slate-600">
@@ -61,107 +75,120 @@ export const ContactPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Form (7 cols) */}
-        <div className="lg:col-span-7">
-          <div className="enterprise-card p-8 sm:p-10 space-y-6">
+          <div className="bg-[#070e1e] text-white p-8 rounded-2xl border border-[#1e3362] space-y-3 shadow-xl">
+            <div className="text-xs uppercase tracking-wider text-cyan-400 font-bold">Hackathon Prototype</div>
+            <h4 className="text-lg font-bold text-white">SIH 2026 Problem Statement 26006</h4>
+            <p className="text-xs text-slate-300 leading-relaxed font-normal">
+              An AI-driven decision support system for optimal vessel chartering, integrating forward curves, draft limitations, and COA contract trade-offs.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Contact Form (7 cols) with Motion Reveal */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, delay: 0.25 }}
+          className="lg:col-span-7"
+        >
+          <div className="enterprise-card p-8 sm:p-10 border border-slate-200">
             {submitted ? (
-              <div className="py-12 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-12 space-y-4"
+              >
+                <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900">Message Received</h3>
+                <h3 className="text-2xl font-bold text-slate-900">Inquiry Received</h3>
                 <p className="text-sm text-slate-600 max-w-md mx-auto">
-                  Thank you for reaching out. A FreightQuant quantitative specialist will review your request and reply shortly.
+                  Thank you for reaching out. Our quantitative chartering desk has received your request and will respond shortly.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="btn-secondary px-5 py-2 text-xs font-semibold"
+                  className="mt-4 px-6 py-2.5 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
                 >
                   Send Another Message
                 </button>
-              </div>
+              </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <h3 className="text-xl font-bold text-slate-900">Send an Inquiry</h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-semibold text-slate-700">Your Full Name</label>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-700">Full Name</label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Veer Singh Rathor"
+                      placeholder="e.g. Capt. Rajesh Sharma"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                      className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                     />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-semibold text-slate-700">Business Email</label>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-700">Work Email</label>
                     <input
                       type="email"
                       required
-                      placeholder="e.g. veer@logistics.com"
+                      placeholder="r.sharma@shippingcorp.in"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                      className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-semibold text-slate-700">Company / Organization</label>
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-700">Organization / Port Authority</label>
                     <input
                       type="text"
-                      placeholder="e.g. SAIL / CIL / Maritime Charterers"
+                      placeholder="e.g. Steel Authority of India Ltd"
                       value={form.company}
                       onChange={(e) => setForm({ ...form, company: e.target.value })}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                      className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                     />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-semibold text-slate-700">Inquiry Subject</label>
-                    <select
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-700">Inquiry Subject</label>
+                    <input
+                      type="text"
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                    >
-                      <option value="Chartering Advisory & Platform Integration">Chartering Advisory & Platform Integration</option>
-                      <option value="Model Transparency & API Access">Model Transparency & API Access</option>
-                      <option value="SIH 2026 Presentation Inquiry">SIH 2026 Presentation Inquiry</option>
-                      <option value="Custom Corridor / Port Configuration">Custom Corridor / Port Configuration</option>
-                    </select>
+                      className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    />
                   </div>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-slate-700">Your Message</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-700">Message / Charter Scenario Details</label>
                   <textarea
-                    required
                     rows={4}
-                    placeholder="Provide details on your cargo parcels, target corridors, or integration requirements..."
+                    required
+                    placeholder="Provide details about your parcel volume, trade route (e.g. Hay Point to Paradip), and current chartering workflow..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                  ></textarea>
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  />
                 </div>
 
                 <button
                   type="submit"
-                  className="btn-primary w-full py-3 text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                  className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
-                  <span>Send Message</span>
+                  <span>Submit Inquiry</span>
                 </button>
               </form>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
