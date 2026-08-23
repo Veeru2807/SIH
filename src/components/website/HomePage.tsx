@@ -141,7 +141,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </motion.div>
             </div>
 
-            {/* Right Visual: Ship + Floating Badges Positioned Directly Near the Vessel (5 Cols) */}
+            {/* Right Visual: Cinematic Panamax Vessel Photo (5 Cols) */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.96, y: 25 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -151,29 +151,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               }}
               className="lg:col-span-5 relative flex flex-col items-center justify-center"
             >
-              {/* Floating Badge 1: Market Regime (Top Right of Vessel) */}
+              {/* Floating Badge 1: Market Regime */}
               <motion.div 
                 animate={{ y: [-3, 3, -3] }}
                 transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute -top-6 right-2 z-20 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0c1630]/95 border border-emerald-500/50 backdrop-blur-md shadow-xl text-[11px]"
+                className="absolute -top-6 right-2 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#0c1630]/95 border border-emerald-500/50 backdrop-blur-md shadow-xl text-xs"
               >
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
                 <span className="text-slate-300">Market:</span>
                 <span className="font-bold text-emerald-400 font-mono">RISING (+11.9%)</span>
               </motion.div>
 
-              {/* Floating Badge 2: Recommended Window (Top Left of Bridge) */}
+              {/* Floating Badge 2: Recommended Window */}
               <motion.div 
                 animate={{ y: [3, -4, 3] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-                className="absolute -top-4 left-0 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0c1630]/95 border border-amber-500/50 backdrop-blur-md shadow-xl text-[11px]"
+                className="absolute -top-4 left-0 z-20 flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0c1630]/95 border border-amber-500/50 backdrop-blur-md shadow-xl text-xs"
               >
-                <Sparkles className="w-3 h-3 text-amber-400" />
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                 <span className="text-slate-300">Entry:</span>
                 <span className="font-bold text-amber-300 font-mono">Next 4–7 Days</span>
               </motion.div>
 
-              {/* Ship Body with Gentle Ocean Float */}
+              {/* High-Resolution Hero Ship Photo */}
               <motion.div
                 animate={{ 
                   x: [0, 5, 0],
@@ -184,12 +184,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   repeat: Infinity, 
                   ease: 'easeInOut' 
                 }}
-                className="w-full"
+                className="w-full rounded-2xl overflow-hidden border border-cyan-500/40 shadow-2xl shadow-cyan-950/60 bg-black/60 relative group"
               >
-                <HeroShipVisual />
+                <img
+                  src="/hero_ship.jpg"
+                  alt="Panamax Bulk Carrier at Sea"
+                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#070e1e] via-transparent to-transparent opacity-80"></div>
+                <div className="absolute bottom-3 left-4 text-[11px] font-mono text-cyan-300 font-bold flex items-center gap-1.5">
+                  <Ship className="w-3.5 h-3.5" />
+                  <span>STAR NOVA • 76,000 DWT PANAMAX</span>
+                </div>
               </motion.div>
 
-              {/* Floating Badge 3: Optimal Vessel (Positioned Directly Below Keel of the Ship) */}
+              {/* Floating Badge 3: Optimal Vessel */}
               <motion.div 
                 animate={{ y: [-2, 3, -2] }}
                 transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}

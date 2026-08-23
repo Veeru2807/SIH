@@ -9,15 +9,27 @@ interface AboutPageProps {
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
   return (
     <div className="pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-      {/* Header */}
-      <div className="max-w-3xl space-y-4">
-        <div className="text-xs font-bold uppercase tracking-wider text-blue-600">Company & Vision</div>
-        <h1 className="text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight">
-          About FreightQuant
-        </h1>
-        <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-          Developed for SIH 2026 Problem Statement 26006 to revolutionize dry-bulk procurement and chartering decision intelligence for national logistics managers.
-        </p>
+      {/* Header with Harbour Dock Photo */}
+      <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-xl bg-[#070e1e] relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+          <div className="lg:col-span-7 p-8 sm:p-12 space-y-4">
+            <div className="text-xs font-bold uppercase tracking-wider text-cyan-400">Company & Vision</div>
+            <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight">
+              About FreightQuant
+            </h1>
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
+              Developed for SIH 2026 Problem Statement 26006 to revolutionize dry-bulk procurement and chartering decision intelligence for national logistics managers.
+            </p>
+          </div>
+          <div className="lg:col-span-5 h-64 lg:h-full relative overflow-hidden">
+            <img
+              src="/harbour_dock.jpg"
+              alt="Bulk Carrier Vessel Entering Indian Harbour"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#070e1e] via-transparent to-transparent hidden lg:block"></div>
+          </div>
+        </div>
       </div>
 
       {/* Mission & Vision Grid */}
