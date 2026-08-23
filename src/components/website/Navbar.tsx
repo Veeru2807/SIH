@@ -72,9 +72,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate }) => {
               <span className="font-bold text-lg tracking-tight text-white group-hover:text-blue-400 transition-colors">
                 FREIGHTQUANT
               </span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded font-mono font-bold bg-blue-950 text-blue-300 border border-blue-800">
-                AI MARITIME
-              </span>
             </div>
             <p className="text-[11px] text-slate-400 tracking-normal font-normal">
               Maritime Intelligence Platform
