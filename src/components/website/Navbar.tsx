@@ -113,9 +113,9 @@ export const Navbar: React.FC<NavbarProps> = ({ activePage, onNavigate }) => {
           
           <button
             onClick={() => onNavigate('dashboard')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-all transform hover:-translate-y-0.5 cursor-pointer"
+            className="flex items-center gap-1.5 px-5 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 text-xs font-bold shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all transform hover:-translate-y-0.5 cursor-pointer"
           >
-            <span>Launch Dashboard</span>
+            <span>Explore Platform</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>

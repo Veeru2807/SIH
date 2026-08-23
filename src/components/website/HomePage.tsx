@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { 
   ArrowRight, 
   TrendingUp, 
@@ -9,36 +9,16 @@ import {
   Play
 } from 'lucide-react';
 import { MainNavPage } from './Navbar';
-import { MaritimeRouteCanvas } from './MaritimeRouteCanvas';
-import { HeroShipVisual } from './HeroShipVisual';
 
 interface HomePageProps {
   onNavigate: (page: MainNavPage) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
-  // Mouse movement parallax state
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const heroRef = useRef<HTMLDivElement>(null);
-
   // Animated KPI count-up values
   const [freightRate, setFreightRate] = useState(0);
   const [savingsVal, setSavingsVal] = useState(0);
   const [confidenceVal, setConfidenceVal] = useState(0);
-
-  // Scroll parallax effects
-  const { scrollYProgress } = useScroll();
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.2]);
-  const heroParallaxY = useTransform(scrollYProgress, [0, 0.4], [0, 60]);
-
-  // Handle subtle mouse parallax
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!heroRef.current) return;
-    const rect = heroRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 10;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 10;
-    setMousePos({ x, y });
-  };
 
   useEffect(() => {
     const duration = 1400;
@@ -61,207 +41,111 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   }, []);
 
   return (
-    <div className="space-y-28 overflow-hidden">
-      {/* 1. Hero Section */}
-      <section 
-        ref={heroRef}
-        onMouseMove={handleMouseMove}
-        className="relative min-h-[92vh] bg-[#070e1e] text-white pt-32 pb-20 flex flex-col justify-between overflow-hidden border-b border-[#1e3362]"
-      >
-        {/* Animated Maritime World Route Canvas (Background confined to right side) */}
-        <MaritimeRouteCanvas />
+    <div className="space-y-24 overflow-hidden">
+      {/* 1. Cinematic Full-Bleed Vessel Hero Section (Matching Exactly Your Reference Design) */}
+      <section className="relative min-h-[95vh] flex flex-col justify-between overflow-hidden bg-[#070e1e] text-white pt-28 pb-16">
+        {/* Cinematic Ocean Vessel Background Image */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <motion.img
+            initial={{ scale: 1.08 }}
+            animate={{ scale: 1.0 }}
+            transition={{ duration: 12, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+            src="/cma_cgm_hero.jpg"
+            alt="CMA CGM Vessel Navigating Ocean"
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Subtle Dark Radial Gradient Vignette Overlay for Readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#070e1e]/85 via-black/40 to-[#070e1e] z-10"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-[#070e1e]/40 to-[#070e1e]/90 z-10"></div>
+        </div>
 
-        {/* Hero Content Container */}
-        <motion.div 
-          style={{ opacity: heroOpacity, y: heroParallaxY }}
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex-1 flex flex-col justify-center my-auto"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* Left Content (7 Cols) - Unobscured Clean Typography */}
-            <div className="lg:col-span-7 space-y-6">
-              {/* Tag / Badge */}
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111f42] border border-[#1e3362] text-xs font-medium text-blue-300 shadow-sm"
-              >
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                <span>Intelligent Maritime Decision-Support Terminal</span>
-                <span className="text-slate-500">|</span>
-                <span className="text-slate-300 font-mono">SIH 26006</span>
-              </motion.div>
+        {/* Center Title Content */}
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center flex-1 flex flex-col justify-center items-center my-auto space-y-6">
+          {/* Small Cyan Tag */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-cyan-400 font-bold tracking-[0.25em] text-xs sm:text-sm uppercase drop-shadow-[0_2px_10px_rgba(6,182,212,0.6)]"
+          >
+            FREIGHTQUANT
+          </motion.div>
 
-              {/* Headline */}
-              <motion.h1 
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.15 }}
-                className="text-4xl sm:text-6xl font-bold tracking-tight text-white leading-[1.06]"
-              >
-                AI-Powered Insights.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-white">
-                  Smarter Chartering.
-                </span>
-              </motion.h1>
+          {/* Bold Centered Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-4xl sm:text-7xl font-black tracking-tight text-white uppercase drop-shadow-2xl font-sans"
+          >
+            MARITIME INTELLIGENCE PLATFORM
+          </motion.h1>
 
-              {/* Subtitle */}
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-xl font-normal"
-              >
-                FreightQuant helps shipping companies predict freight forward curves, evaluate Indian East Coast port drafts, and execute data-driven COA contracts.
-              </motion.p>
+          {/* Clean Subtext */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="text-base sm:text-xl text-slate-200 font-medium max-w-2xl mx-auto drop-shadow-lg"
+          >
+            Leveraging AI for Global Shipping & Bulk Logistics Optimization
+          </motion.p>
 
-              {/* CTAs with Light Sweep */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.45 }}
-                className="flex flex-wrap items-center gap-4 pt-2"
-              >
-                <button
-                  onClick={() => onNavigate('dashboard')}
-                  className="relative group overflow-hidden btn-primary px-7 py-3.5 text-sm font-semibold flex items-center gap-2 shadow-xl shadow-blue-600/30 cursor-pointer"
-                >
-                  <span className="relative z-10">Launch Dashboard</span>
-                  <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                </button>
+          {/* Glowing Pill CTA Button */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="pt-4"
+          >
+            <button
+              onClick={() => onNavigate('dashboard')}
+              className="px-8 py-3.5 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-slate-950 font-bold text-sm shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:shadow-[0_0_40px_rgba(6,182,212,0.9)] transition-all transform hover:-translate-y-1 active:translate-y-0 cursor-pointer"
+            >
+              Explore Platform
+            </button>
+          </motion.div>
+        </div>
 
-                <button
-                  onClick={() => onNavigate('methodology')}
-                  className="px-6 py-3.5 rounded-lg bg-[#111f42] hover:bg-[#162852] border border-[#1e3362] text-white text-sm font-semibold transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center gap-2"
-                >
-                  <Play className="w-3.5 h-3.5 text-cyan-400 fill-cyan-400" />
-                  <span>Explore Methodology</span>
-                </button>
-              </motion.div>
+        {/* Live Staggered KPI Metric Bar at Bottom of Hero */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-20 pt-6 border-t border-slate-700/60 backdrop-blur-sm bg-black/30 rounded-2xl py-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
+            <div className="space-y-1 hover:translate-x-1 transition-transform">
+              <div className="text-xs uppercase tracking-wider text-slate-300 font-semibold">Current Freight Rate</div>
+              <div className="text-2xl sm:text-3xl font-bold font-mono text-white">
+                ${freightRate.toFixed(2)} <span className="text-xs text-slate-300 font-sans font-normal">/ MT</span>
+              </div>
+              <div className="text-xs text-cyan-300 font-medium">Hay Point → Paradip</div>
             </div>
 
-            {/* Right Visual: Animated Vector Vessel Structure (5 Cols) */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.96, y: 25 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 1.0, delay: 0.2 }}
-              style={{
-                transform: `translate(${mousePos.x * -0.6}px, ${mousePos.y * -0.6}px)`,
-              }}
-              className="lg:col-span-5 relative flex flex-col items-center justify-center"
-            >
-              {/* Floating Badge 1: Market Regime */}
-              <motion.div 
-                animate={{ y: [-3, 3, -3] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute -top-6 right-2 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#0c1630]/95 border border-emerald-500/50 backdrop-blur-md shadow-xl text-xs"
-              >
-                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
-                <span className="text-slate-300">Market:</span>
-                <span className="font-bold text-emerald-400 font-mono">RISING (+11.9%)</span>
-              </motion.div>
-
-              {/* Floating Badge 2: Recommended Window */}
-              <motion.div 
-                animate={{ y: [3, -4, 3] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-                className="absolute -top-4 left-0 z-20 flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0c1630]/95 border border-amber-500/50 backdrop-blur-md shadow-xl text-xs"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span className="text-slate-300">Entry:</span>
-                <span className="font-bold text-amber-300 font-mono">Next 4–7 Days</span>
-              </motion.div>
-
-              {/* Vector Vessel Model with Gentle Ocean Float */}
-              <motion.div
-                animate={{ 
-                  x: [0, 6, 0],
-                  y: [0, -4, 0] 
-                }}
-                transition={{ 
-                  duration: 7, 
-                  repeat: Infinity, 
-                  ease: 'easeInOut' 
-                }}
-                className="w-full"
-              >
-                <HeroShipVisual />
-              </motion.div>
-
-              {/* Floating Badge 3: Optimal Vessel */}
-              <motion.div 
-                animate={{ y: [-2, 3, -2] }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
-                className="mt-3 flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0c1630]/95 border border-cyan-500/50 backdrop-blur-md shadow-xl text-xs z-20"
-              >
-                <Ship className="w-3.5 h-3.5 text-cyan-400" />
-                <span className="text-slate-300">Optimal Vessel Fit:</span>
-                <span className="font-bold text-cyan-300 font-mono">PANAMAX 76k DWT (13.8m Draft)</span>
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Clean Staggered KPI Metric Strip */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 pt-6 border-t border-[#1e3362]/80">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="space-y-1 hover:translate-x-1 transition-transform"
-            >
-              <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Current Benchmark Rate</div>
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-white">
-                ${freightRate.toFixed(2)} <span className="text-xs text-slate-400 font-sans font-normal">/ MT</span>
-              </div>
-              <div className="text-xs text-cyan-400 font-medium">Hay Point (Aus) → Paradip (Ind)</div>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.7 }}
-              className="space-y-1 hover:translate-x-1 transition-transform"
-            >
-              <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">30-Day Forecast Target</div>
+            <div className="space-y-1 hover:translate-x-1 transition-transform">
+              <div className="text-xs uppercase tracking-wider text-slate-300 font-semibold">30-Day Forecast</div>
               <div className="text-2xl sm:text-3xl font-bold font-mono text-amber-400">
-                $31.80 <span className="text-xs text-slate-400 font-sans font-normal">/ MT</span>
+                $31.80 <span className="text-xs text-slate-300 font-sans font-normal">/ MT</span>
               </div>
-              <div className="text-xs text-amber-400/90 font-medium">+11.9% Contango Trajectory</div>
-            </motion.div>
+              <div className="text-xs text-amber-300/90 font-medium">+11.9% Contango Shift</div>
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
-              className="space-y-1 hover:translate-x-1 transition-transform"
-            >
-              <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Market Regime State</div>
+            <div className="space-y-1 hover:translate-x-1 transition-transform">
+              <div className="text-xs uppercase tracking-wider text-slate-300 font-semibold">Market Regime</div>
               <div className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">
                 RISING
               </div>
-              <div className="text-xs text-emerald-400/90 font-medium">{confidenceVal}% Model Confidence</div>
-            </motion.div>
+              <div className="text-xs text-emerald-300/90 font-medium">{confidenceVal}% Confidence</div>
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.9 }}
-              className="space-y-1 hover:translate-x-1 transition-transform"
-            >
-              <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Multi-Voyage Savings</div>
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-blue-400">
+            <div className="space-y-1 hover:translate-x-1 transition-transform">
+              <div className="text-xs uppercase tracking-wider text-slate-300 font-semibold">COA Cost Savings</div>
+              <div className="text-2xl sm:text-3xl font-bold font-mono text-cyan-300">
                 {savingsVal}% (₹7.1 Cr)
               </div>
-              <div className="text-xs text-slate-400 font-medium">vs Volatile Spot Market</div>
-            </motion.div>
+              <div className="text-xs text-slate-300 font-medium">vs Spot Fixtures</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Why FreightQuant Section */}
+      {/* 2. Enterprise Decision Capabilities */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-16">
           <div className="text-xs font-bold uppercase tracking-wider text-blue-600">Enterprise Decision Intelligence</div>
@@ -340,17 +224,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <p className="text-xs text-slate-300 leading-relaxed">{m.desc}</p>
               </div>
             ))}
-          </div>
-
-          {/* High-Resolution Platform Architecture Showcase Image */}
-          <div className="pt-6">
-            <div className="rounded-xl overflow-hidden border border-slate-700/90 shadow-2xl bg-black/50">
-              <img 
-                src="/freightquant_showcase.jpg" 
-                alt="FreightQuant High Fidelity Architecture & Platform Preview" 
-                className="w-full h-auto object-cover hover:scale-[1.01] transition-transform duration-500"
-              />
-            </div>
           </div>
         </div>
       </section>
