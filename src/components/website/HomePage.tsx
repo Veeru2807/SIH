@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { 
   ArrowRight, 
   TrendingUp, 
@@ -9,24 +10,47 @@ import {
   DollarSign,
   Calendar,
   Compass,
-  CheckCircle2
+  CheckCircle2,
+  Anchor,
+  Activity,
+  Sliders,
+  Play
 } from 'lucide-react';
 import { MainNavPage } from './Navbar';
+import { MaritimeRouteCanvas } from './MaritimeRouteCanvas';
+import { HeroShipVisual } from './HeroShipVisual';
 
 interface HomePageProps {
   onNavigate: (page: MainNavPage) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
-  // Smooth KPI count-up animations
+  // Mouse movement parallax state
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  // Animated KPI count-up values
   const [freightRate, setFreightRate] = useState(0);
   const [savingsVal, setSavingsVal] = useState(0);
   const [confidenceVal, setConfidenceVal] = useState(0);
+  const [vesselsTracked, setVesselsTracked] = useState(0);
+
+  // Scroll parallax effects
+  const { scrollYProgress } = useScroll();
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.2]);
+  const heroParallaxY = useTransform(scrollYProgress, [0, 0.4], [0, 80]);
+
+  // Handle subtle mouse parallax
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12; // Max 6px shift
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 12;
+    setMousePos({ x, y });
+  };
 
   useEffect(() => {
-    // 0 -> 28.40
-    let start = 0;
-    const duration = 1200;
+    const duration = 1400;
     const startTime = performance.now();
 
     const updateCount = (now: number) => {
@@ -37,6 +61,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       setFreightRate(Number((28.40 * easeOut).toFixed(2)));
       setSavingsVal(Number((7.1 * easeOut).toFixed(1)));
       setConfidenceVal(Number((84.5 * easeOut).toFixed(1)));
+      setVesselsTracked(Math.round(412 * easeOut));
 
       if (progress < 1) {
         requestAnimationFrame(updateCount);
@@ -46,94 +71,208 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   }, []);
 
   return (
-    <div className="space-y-24">
-      {/* 1. Hero Section */}
-      <section className="relative bg-[#070e1e] text-white pt-36 pb-24 overflow-hidden border-b border-[#1e3362]">
-        <div className="absolute inset-0 hero-grid opacity-60"></div>
-        
-        {/* Ambient Subtle Pulsing Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[450px] bg-blue-600/15 blur-[130px] animate-pulse-glow pointer-events-none"></div>
+    <div className="space-y-28 overflow-hidden">
+      {/* 1. Cinematic Hero Section */}
+      <section 
+        ref={heroRef}
+        onMouseMove={handleMouseMove}
+        className="relative min-h-[92vh] bg-[#070e1e] text-white pt-32 pb-20 flex flex-col justify-between overflow-hidden border-b border-[#1e3362]"
+      >
+        {/* Animated Maritime World Route Canvas (Background) */}
+        <MaritimeRouteCanvas />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl space-y-6 animate-fade-in-up">
-            {/* Tag / Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111f42] border border-[#1e3362] text-xs font-medium text-blue-300 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
-              <span>Intelligent Maritime Decision-Support Terminal</span>
-              <span className="text-slate-500">|</span>
-              <span className="text-slate-300 font-mono">SIH Problem Statement 26006</span>
+        {/* Floating Intelligence Data Badges (Floating subtle cards) */}
+        <motion.div 
+          animate={{ y: [-4, 4, -4] }}
+          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transform: `translate(${mousePos.x * 0.5}px, ${mousePos.y * 0.5}px)` }}
+          className="hidden lg:flex absolute top-36 right-16 z-20 items-center gap-2.5 px-3.5 py-2 rounded-lg bg-[#0c1630]/90 border border-cyan-500/40 backdrop-blur-md shadow-xl text-xs"
+        >
+          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
+          <span className="text-slate-300">Market Regime:</span>
+          <span className="font-bold text-emerald-400 font-mono">RISING (+11.9% 30D)</span>
+        </motion.div>
+
+        <motion.div 
+          animate={{ y: [4, -5, 4] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          style={{ transform: `translate(${mousePos.x * -0.6}px, ${mousePos.y * -0.6}px)` }}
+          className="hidden lg:flex absolute bottom-44 left-12 z-20 items-center gap-2.5 px-3.5 py-2 rounded-lg bg-[#0c1630]/90 border border-blue-500/40 backdrop-blur-md shadow-xl text-xs"
+        >
+          <Ship className="w-3.5 h-3.5 text-cyan-400" />
+          <span className="text-slate-300">Optimal Vessel:</span>
+          <span className="font-bold text-cyan-300 font-mono">PANAMAX 76k DWT</span>
+        </motion.div>
+
+        <motion.div 
+          animate={{ y: [-5, 3, -5] }}
+          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          style={{ transform: `translate(${mousePos.x * 0.4}px, ${mousePos.y * 0.4}px)` }}
+          className="hidden xl:flex absolute top-72 right-1/4 z-20 items-center gap-2.5 px-3.5 py-2 rounded-lg bg-[#0c1630]/90 border border-amber-500/40 backdrop-blur-md shadow-xl text-xs"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <span className="text-slate-300">Recommended Window:</span>
+          <span className="font-bold text-amber-300 font-mono">Next 4–7 Days</span>
+        </motion.div>
+
+        {/* Hero Content Container */}
+        <motion.div 
+          style={{ opacity: heroOpacity, y: heroParallaxY }}
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex-1 flex flex-col justify-center my-auto"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Left Content (7 Cols) */}
+            <div className="lg:col-span-7 space-y-6">
+              {/* Step 1 Tag */}
+              <motion.div 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111f42] border border-[#1e3362] text-xs font-medium text-blue-300 shadow-sm"
+              >
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                <span>Intelligent Maritime Decision-Support Terminal</span>
+                <span className="text-slate-500">|</span>
+                <span className="text-slate-300 font-mono">SIH 26006</span>
+              </motion.div>
+
+              {/* Step 2 Headline */}
+              <motion.h1 
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.15 }}
+                className="text-4xl sm:text-6xl font-bold tracking-tight text-white leading-[1.06]"
+              >
+                AI-Powered Insights.<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-white">
+                  Smarter Chartering.
+                </span>
+              </motion.h1>
+
+              {/* Step 3 Subtitle */}
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-xl font-normal"
+              >
+                FreightQuant helps shipping companies predict freight forward curves, evaluate Indian East Coast port drafts, and execute data-driven COA contracts.
+              </motion.p>
+
+              {/* Step 4 CTAs with Light Sweep & Elevation Micro-interactions */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.45 }}
+                className="flex flex-wrap items-center gap-4 pt-2"
+              >
+                <button
+                  onClick={() => onNavigate('dashboard')}
+                  className="relative group overflow-hidden btn-primary px-7 py-3.5 text-sm font-semibold flex items-center gap-2 shadow-xl shadow-blue-600/30 cursor-pointer"
+                >
+                  <span className="relative z-10">Launch Dashboard</span>
+                  <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
+                  {/* Subtle Light Sweep Effect */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                </button>
+
+                <button
+                  onClick={() => onNavigate('methodology')}
+                  className="px-6 py-3.5 rounded-lg bg-[#111f42] hover:bg-[#162852] border border-[#1e3362] text-white text-sm font-semibold transition-all transform hover:-translate-y-0.5 cursor-pointer flex items-center gap-2"
+                >
+                  <Play className="w-3.5 h-3.5 text-cyan-400 fill-cyan-400" />
+                  <span>Explore Methodology</span>
+                </button>
+              </motion.div>
             </div>
 
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-white leading-[1.08]">
-              AI-Powered Insights.<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-white">
-                Smarter Chartering.
-              </span>
-            </h1>
-
-            {/* Subtext */}
-            <p className="text-lg text-slate-300 leading-relaxed max-w-2xl font-normal">
-              FreightQuant helps shipping companies and bulk procurement teams predict freight markets, optimize vessel chartering, and execute data-driven COA contracts.
-            </p>
-
-            {/* Action Buttons with Micro-interactions */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <button
-                onClick={() => onNavigate('dashboard')}
-                className="btn-primary px-6 py-3.5 text-sm font-semibold flex items-center gap-2 shadow-lg shadow-blue-500/25 cursor-pointer group"
+            {/* Right Visual: Moving Panamax Vessel (5 Cols) */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 1.1, delay: 0.2 }}
+              style={{
+                transform: `translate(${mousePos.x * -0.8}px, ${mousePos.y * -0.8}px)`,
+              }}
+              className="lg:col-span-5 relative"
+            >
+              {/* Subtle Continuous Sea Floating Movement */}
+              <motion.div
+                animate={{ 
+                  x: [0, 6, 0],
+                  y: [0, -4, 0] 
+                }}
+                transition={{ 
+                  duration: 8, 
+                  repeat: Infinity, 
+                  ease: 'easeInOut' 
+                }}
               >
-                <span>Launch Dashboard</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-
-              <button
-                onClick={() => onNavigate('services')}
-                className="px-6 py-3.5 rounded-lg bg-[#111f42] hover:bg-[#162852] border border-[#1e3362] text-white text-sm font-semibold transition-all transform hover:-translate-y-0.5 cursor-pointer"
-              >
-                Explore Services
-              </button>
-            </div>
+                <HeroShipVisual />
+              </motion.div>
+            </motion.div>
           </div>
+        </motion.div>
 
-          {/* Quick Metrics Bar with Live Animated Count-Up */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 pt-8 border-t border-[#1e3362]/80">
-            <div className="transition-all duration-300 hover:translate-x-1">
+        {/* Live Staggered Count-Up KPI Metric Bar */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 pt-6 border-t border-[#1e3362]/80">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="space-y-1 hover:translate-x-1 transition-transform"
+            >
               <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Current Benchmark Rate</div>
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-white mt-1">
+              <div className="text-2xl sm:text-3xl font-bold font-mono text-white">
                 ${freightRate.toFixed(2)} <span className="text-xs text-slate-400 font-sans font-normal">/ MT</span>
               </div>
-              <div className="text-xs text-blue-400 mt-0.5 font-medium">Pacific Hay Point → Paradip</div>
-            </div>
+              <div className="text-xs text-cyan-400 font-medium">Hay Point (Aus) → Paradip (Ind)</div>
+            </motion.div>
 
-            <div className="transition-all duration-300 hover:translate-x-1">
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="space-y-1 hover:translate-x-1 transition-transform"
+            >
               <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">30-Day Forecast Target</div>
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-amber-400 mt-1">
+              <div className="text-2xl sm:text-3xl font-bold font-mono text-amber-400">
                 $31.80 <span className="text-xs text-slate-400 font-sans font-normal">/ MT</span>
               </div>
-              <div className="text-xs text-amber-400/90 mt-0.5 font-medium">+11.9% Contango Shift</div>
-            </div>
+              <div className="text-xs text-amber-400/90 font-medium">+11.9% Contango Trajectory</div>
+            </motion.div>
 
-            <div className="transition-all duration-300 hover:translate-x-1">
-              <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Market Regime</div>
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400 mt-1">
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              className="space-y-1 hover:translate-x-1 transition-transform"
+            >
+              <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Market Regime State</div>
+              <div className="text-2xl sm:text-3xl font-bold font-mono text-emerald-400">
                 RISING
               </div>
-              <div className="text-xs text-emerald-400/90 mt-0.5 font-medium">{confidenceVal}% Model Confidence</div>
-            </div>
+              <div className="text-xs text-emerald-400/90 font-medium">{confidenceVal}% Model Confidence</div>
+            </motion.div>
 
-            <div className="transition-all duration-300 hover:translate-x-1">
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              className="space-y-1 hover:translate-x-1 transition-transform"
+            >
               <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Multi-Voyage Savings</div>
-              <div className="text-2xl sm:text-3xl font-bold font-mono text-blue-400 mt-1">
+              <div className="text-2xl sm:text-3xl font-bold font-mono text-blue-400">
                 {savingsVal}% (₹7.1 Cr)
               </div>
-              <div className="text-xs text-slate-400 mt-0.5 font-medium">vs Volatile Spot Market</div>
-            </div>
+              <div className="text-xs text-slate-400 font-medium">vs Volatile Spot Market</div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* 2. Why FreightQuant (Light Editorial Surface) */}
+      {/* 2. Why FreightQuant Section with Staggered Scroll Reveal */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto space-y-3 mb-16">
           <div className="text-xs font-bold uppercase tracking-wider text-blue-600">Enterprise Decision Intelligence</div>
@@ -146,35 +285,37 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="enterprise-card p-8 space-y-4 group">
-            <div className="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <TrendingUp className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900">Probabilistic Forecasting</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              DeepAR recurrent models and XGBoost ensembles forecast 7D, 14D, and 30D rate trajectories with calibrated 80% and 95% confidence cones.
-            </p>
-          </div>
-
-          <div className="enterprise-card p-8 space-y-4 group">
-            <div className="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Ship className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900">Vessel & Port Constraints</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Calculates geometric compatibility against Indian East Coast discharge drafts (Paradip, Vizag, Dhamra, Haldia) to avoid costly demurrage.
-            </p>
-          </div>
-
-          <div className="enterprise-card p-8 space-y-4 group">
-            <div className="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900">COA Contract Strategy</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Quantifies spot vs short-term vs medium-term multiple-voyage contracts, recommending optimal laycan windows with guaranteed volume discounts.
-            </p>
-          </div>
+          {[
+            {
+              title: 'Probabilistic Forecasting',
+              desc: 'DeepAR recurrent models and XGBoost ensembles forecast 7D, 14D, and 30D rate trajectories with calibrated 80% and 95% confidence cones.',
+              icon: TrendingUp,
+            },
+            {
+              title: 'Vessel & Port Constraints',
+              desc: 'Calculates geometric compatibility against Indian East Coast discharge drafts (Paradip, Vizag, Dhamra, Haldia) to avoid costly demurrage.',
+              icon: Ship,
+            },
+            {
+              title: 'COA Contract Strategy',
+              desc: 'Quantifies spot vs short-term vs medium-term multiple-voyage contracts, recommending optimal laycan windows with guaranteed volume discounts.',
+              icon: ShieldCheck,
+            }
+          ].map((card, idx) => {
+            const Icon = card.icon;
+            return (
+              <div
+                key={idx}
+                className="enterprise-card p-8 space-y-4 group hover:-translate-y-2 transition-transform duration-300"
+              >
+                <div className="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">{card.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{card.desc}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -214,10 +355,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* 4. CTA Banner */}
+      {/* 4. Final CTA Banner with Route Atmosphere */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 rounded-2xl p-10 sm:p-14 text-white flex flex-wrap items-center justify-between gap-8 shadow-xl shadow-blue-500/10">
-          <div className="max-w-xl space-y-3">
+        <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 rounded-2xl p-10 sm:p-14 text-white flex flex-wrap items-center justify-between gap-8 shadow-2xl shadow-blue-500/20 relative overflow-hidden">
+          <div className="max-w-xl space-y-3 relative z-10">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
               Ready to optimize your vessel chartering strategy?
             </h2>
@@ -226,10 +367,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 relative z-10">
             <button
               onClick={() => onNavigate('dashboard')}
-              className="px-6 py-3.5 rounded-lg bg-white text-blue-700 font-bold text-sm hover:bg-blue-50 shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer"
+              className="px-7 py-3.5 rounded-lg bg-white text-blue-700 font-bold text-sm hover:bg-blue-50 shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer"
             >
               Open Platform Dashboard
             </button>
